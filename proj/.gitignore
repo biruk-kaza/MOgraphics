@@ -1,0 +1,5 @@
+node_modules/
+.remotion/
+output/*
+!output/.gitkeep
+public/fonts/*.woff2

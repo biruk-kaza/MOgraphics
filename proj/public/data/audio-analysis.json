@@ -1,0 +1,67 @@
+{
+  "audioFile": "audio/voiceover.synced.wav",
+  "codec": "pcm_s16le",
+  "sampleRate": 48000,
+  "channels": 2,
+  "durationSeconds": 14.464,
+  "hopMs": 10,
+  "noiseFloorDb": -85.6,
+  "peakDb": -33.6,
+  "thresholdDb": -63.6,
+  "speechStartSeconds": 0.47,
+  "speechEndSeconds": 14.27,
+  "leadingSilenceSeconds": 0.47,
+  "trailingSilenceSeconds": 0.194,
+  "silences": [
+    {
+      "start": 2.53,
+      "end": 2.84,
+      "len": 0.31
+    },
+    {
+      "start": 4.57,
+      "end": 4.94,
+      "len": 0.37
+    },
+    {
+      "start": 5.83,
+      "end": 6.06,
+      "len": 0.23
+    },
+    {
+      "start": 6.88,
+      "end": 7.02,
+      "len": 0.14
+    },
+    {
+      "start": 8.05,
+      "end": 8.51,
+      "len": 0.46
+    },
+    {
+      "start": 8.9,
+      "end": 8.99,
+      "len": 0.09
+    },
+    {
+      "start": 10.56,
+      "end": 10.98,
+      "len": 0.42
+    },
+    {
+      "start": 11.72,
+      "end": 12,
+      "len": 0.28
+    },
+    {
+      "start": 12.55,
+      "end": 13.01,
+      "len": 0.46
+    },
+    {
+      "start": 13.42,
+      "end": 13.59,
+      "len": 0.17
+    }
+  ]
+}

@@ -1,0 +1,353 @@
+{
+  "fps": 30,
+  "audioFile": "audio/voiceover.synced.wav",
+  "audioDurationSeconds": 14.464,
+  "audioSampleRate": 48000,
+  "audioChannels": 2,
+  "totalFrames": 488,
+  "finalHoldFrames": 60,
+  "language": "am",
+  "timingMethod": "audio-envelope-segmentation",
+  "intervals": "half-open [startFrame, endFrame)",
+  "confidenceLegend": {
+    "detected": "boundary found in the audio (silence detection) — reliable to ~1-2 frames",
+    "forced-aligned": "word boundary from CTC forced alignment (MMS, Amharic) — best available",
+    "valley": "interior word boundary placed on a real energy valley (>=3 dB prominence) near the syllable-proportional expectation — plausible, NOT forced-aligned",
+    "interpolated": "proportional to Fidel-syllable count — estimate",
+    "estimated": "from the brief, no audio analysed",
+    "manual": "pinned by hand in src/data/cue-overrides.json"
+  },
+  "warnings": [],
+  "lines": [
+    {
+      "index": 1,
+      "text": "ብዙዎች ነገሮችን ማወሳሰብ ያበዛሉ።",
+      "startFrame": 14,
+      "endFrame": 76,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 3,
+          "startFrame": 14,
+          "endFrame": 76
+        }
+      ],
+      "words": [
+        {
+          "text": "ብዙዎች",
+          "startFrame": 14,
+          "endFrame": 28,
+          "peakFrame": 19,
+          "emphasis": "minor",
+          "confidence": "valley"
+        },
+        {
+          "text": "ነገሮችን",
+          "startFrame": 28,
+          "endFrame": 39,
+          "peakFrame": 35,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ማወሳሰብ",
+          "startFrame": 39,
+          "endFrame": 66,
+          "peakFrame": 44,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ያበዛሉ።",
+          "startFrame": 66,
+          "endFrame": 76,
+          "peakFrame": 68,
+          "emphasis": "none",
+          "confidence": "valley"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "text": "እኛ ግን አቅጣጫውን እንቀይራለን።",
+      "startFrame": 85,
+      "endFrame": 137,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 3,
+          "startFrame": 85,
+          "endFrame": 137
+        }
+      ],
+      "words": [
+        {
+          "text": "እኛ",
+          "startFrame": 85,
+          "endFrame": 94,
+          "peakFrame": 88,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ግን",
+          "startFrame": 94,
+          "endFrame": 101,
+          "peakFrame": 96,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "አቅጣጫውን",
+          "startFrame": 101,
+          "endFrame": 112,
+          "peakFrame": 109,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "እንቀይራለን።",
+          "startFrame": 112,
+          "endFrame": 137,
+          "peakFrame": 114,
+          "emphasis": "none",
+          "confidence": "valley"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "text": "ጥርት ያለ ቅርጽ፣ ትክክለኛ ጊዜ፣ ምንም ትርፍ ነገር የለም።",
+      "startFrame": 148,
+      "endFrame": 242,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 2,
+          "startFrame": 148,
+          "endFrame": 175
+        },
+        {
+          "startWord": 3,
+          "endWord": 4,
+          "startFrame": 182,
+          "endFrame": 206
+        },
+        {
+          "startWord": 5,
+          "endWord": 8,
+          "startFrame": 211,
+          "endFrame": 242
+        }
+      ],
+      "words": [
+        {
+          "text": "ጥርት",
+          "startFrame": 148,
+          "endFrame": 156,
+          "peakFrame": 151,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ያለ",
+          "startFrame": 156,
+          "endFrame": 166,
+          "peakFrame": 158,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ቅርጽ፣",
+          "startFrame": 166,
+          "endFrame": 175,
+          "peakFrame": 168,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ትክክለኛ",
+          "startFrame": 182,
+          "endFrame": 197,
+          "peakFrame": 188,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ጊዜ፣",
+          "startFrame": 197,
+          "endFrame": 206,
+          "peakFrame": 199,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ምንም",
+          "startFrame": 211,
+          "endFrame": 220,
+          "peakFrame": 214,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ትርፍ",
+          "startFrame": 220,
+          "endFrame": 226,
+          "peakFrame": 222,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ነገር",
+          "startFrame": 226,
+          "endFrame": 231,
+          "peakFrame": 227,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "የለም።",
+          "startFrame": 231,
+          "endFrame": 242,
+          "peakFrame": 233,
+          "emphasis": "minor",
+          "confidence": "valley"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "text": "ቃሉን ስትናገሩ ስክሪኑ ይንቀሳቀሳል።",
+      "startFrame": 255,
+      "endFrame": 317,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 3,
+          "startFrame": 255,
+          "endFrame": 317
+        }
+      ],
+      "words": [
+        {
+          "text": "ቃሉን",
+          "startFrame": 255,
+          "endFrame": 269,
+          "peakFrame": 261,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ስትናገሩ",
+          "startFrame": 269,
+          "endFrame": 278,
+          "peakFrame": 271,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ስክሪኑ",
+          "startFrame": 278,
+          "endFrame": 289,
+          "peakFrame": 280,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ይንቀሳቀሳል።",
+          "startFrame": 289,
+          "endFrame": 317,
+          "peakFrame": 293,
+          "emphasis": "major",
+          "confidence": "valley"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "text": "ቀላል ሀሳብ፣ ትልቅ ውጤት።",
+      "startFrame": 329,
+      "endFrame": 377,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 1,
+          "startFrame": 329,
+          "endFrame": 352
+        },
+        {
+          "startWord": 2,
+          "endWord": 3,
+          "startFrame": 360,
+          "endFrame": 377
+        }
+      ],
+      "words": [
+        {
+          "text": "ቀላል",
+          "startFrame": 329,
+          "endFrame": 346,
+          "peakFrame": 336,
+          "emphasis": "minor",
+          "confidence": "valley"
+        },
+        {
+          "text": "ሀሳብ፣",
+          "startFrame": 346,
+          "endFrame": 352,
+          "peakFrame": 348,
+          "emphasis": "minor",
+          "confidence": "valley"
+        },
+        {
+          "text": "ትልቅ",
+          "startFrame": 360,
+          "endFrame": 372,
+          "peakFrame": 364,
+          "emphasis": "major",
+          "confidence": "valley"
+        },
+        {
+          "text": "ውጤት።",
+          "startFrame": 372,
+          "endFrame": 377,
+          "peakFrame": 374,
+          "emphasis": "major",
+          "confidence": "valley"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "text": "አሁን ተዘጋጅተናል።",
+      "startFrame": 390,
+      "endFrame": 428,
+      "phrases": [
+        {
+          "startWord": 0,
+          "endWord": 1,
+          "startFrame": 390,
+          "endFrame": 428
+        }
+      ],
+      "words": [
+        {
+          "text": "አሁን",
+          "startFrame": 390,
+          "endFrame": 405,
+          "peakFrame": 392,
+          "emphasis": "none",
+          "confidence": "valley"
+        },
+        {
+          "text": "ተዘጋጅተናል።",
+          "startFrame": 405,
+          "endFrame": 428,
+          "peakFrame": 411,
+          "emphasis": "major",
+          "confidence": "valley"
+        }
+      ]
+    }
+  ]
+}

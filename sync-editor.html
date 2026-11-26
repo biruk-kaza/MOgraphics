@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="am"><head><meta charset="utf-8"><title>Cue sync editor</title>
+<style>
+ body{margin:0;background:#0b1020;color:#e8ecff;font:14px system-ui,sans-serif}
+ header{padding:12px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:#10182f;position:sticky;top:0;z-index:2}
+ button,input[type=file]{background:#1b2750;color:#e8ecff;border:1px solid #34478a;border-radius:6px;padding:6px 10px}
+ button:hover{background:#26367a;cursor:pointer}
+ #cur{font-size:44px;font-family:'Noto Sans Ethiopic','Abyssinica SIL',sans-serif;min-height:64px;padding:8px 16px;color:#E6B85C}
+ canvas{display:block;width:100%;height:260px;background:#070b18;cursor:crosshair}
+ #info{padding:6px 16px;color:#9fb0e8}
+ #list{padding:8px 16px 40px;font-family:'Noto Sans Ethiopic','Abyssinica SIL',sans-serif;font-size:15px;line-height:2}
+ .w{display:inline-block;border:1px solid #2a3a78;border-radius:6px;padding:0 8px;margin:2px;cursor:pointer}
+ .w.sel{background:#3b2f10;border-color:#E6B85C}.w.chg{outline:1px dashed #3dd9eb}
+ kbd{background:#223;border:1px solid #446;border-radius:4px;padding:0 5px}
+</style></head><body>
+<header>
+ <label>voiceover <input type="file" id="fa" accept="audio/*"></label>
+ <label>voiceover-cues.json <input type="file" id="fj" accept=".json"></label>
+ <button id="play">▶ play / pause (Space)</button>
+ <button id="loop">loop selected word ±0.3s (L)</button>
+ <button id="exp">⬇ export cue-overrides.json</button>
+ <span id="info">Load the audio and the cue sheet.</span>
+</header>
+<div id="cur">&nbsp;</div>
+<canvas id="cv"></canvas>
+<div id="info2" style="padding:6px 16px;color:#9fb0e8">
+ Click a word below to select it. <kbd>A</kbd>/<kbd>D</kbd> move its <b>start</b> −/+1 frame, <kbd>Q</kbd>/<kbd>E</kbd> move its <b>end</b>, <kbd>Shift</kbd> = 5 frames.
+ Or drag the amber (start) / cyan (end) handles. Wheel = zoom, scroll-drag with the right mouse button = pan.
+ Changed words get a dashed outline. Export, commit as <code>src/data/cue-overrides.json</code>, push.
+</div>
+<div id="list"></div>
+<script>
+const FPS=30; let sheet=null, orig=null, buf=null, ac=null, src=null, startedAt=0, offset=0, playing=false, sel=null, drag=null;
+let view={t0:0,t1:15}, loopOn=false; const cv=document.getElementById('cv'), g=cv.getContext('2d');
+const $=id=>document.getElementById(id);
+$('fa').onchange=async e=>{const f=e.target.files[0]; if(!f)return; ac=ac||new AudioContext(); buf=await ac.decodeAudioData(await f.arrayBuffer()); view={t0:0,t1:buf.duration}; peaks=null; info(); draw();};
+$('fj').onchange=async e=>{const f=e.target.files[0]; if(!f)return; sheet=JSON.parse(await f.text()); orig=JSON.parse(JSON.stringify(sheet)); build(); info(); draw();};
+function info(){$('info').textContent=(buf?`audio ${buf.duration.toFixed(3)}s `:'')+(sheet?`| ${sheet.lines.length} lines, method: ${sheet.timingMethod}`:'');}
+const words=()=>sheet?sheet.lines.flatMap(l=>l.words.map((w,i)=>({l,w,i}))):[];
+function build(){const L=$('list');L.innerHTML='';sheet.lines.forEach(l=>{const d=document.createElement('div');d.append(`${l.index}: `);l.words.forEach((w,i)=>{const s=document.createElement('span');s.className='w';s.textContent=w.text;s.dataset.k=l.index+'.'+i;s.onclick=()=>{select(l.index+'.'+i);seek(w.startFrame/FPS-0.2)};d.append(s)});L.append(d)});refresh();}
+function find(k){const [a,b]=k.split('.').map(Number);return {l:sheet.lines[a-1],w:sheet.lines[a-1].words[b],key:k}}
+function select(k){sel=k;refresh();draw();}
+function refresh(){document.querySelectorAll('.w').forEach(s=>{const {w}=find(s.dataset.k);const [a,b]=s.dataset.k.split('.').map(Number);const o=orig.lines[a-1].words[b];s.classList.toggle('sel',s.dataset.k===sel);s.classList.toggle('chg',o.startFrame!==w.startFrame||o.endFrame!==w.endFrame)});}
+let peaks=null;function computePeaks(){const d=buf.getChannelData(0),n=4000,step=d.length/n;peaks=new Float32Array(n);for(let i=0;i<n;i++){let m=0;for(let j=Math.floor(i*step);j<Math.floor((i+1)*step);j++)m=Math.max(m,Math.abs(d[j]));peaks[i]=m}}
+const x2t=x=>view.t0+(x/cv.width)*(view.t1-view.t0), t2x=t=>((t-view.t0)/(view.t1-view.t0))*cv.width;
+function draw(){cv.width=cv.clientWidth*devicePixelRatio;cv.height=cv.clientHeight*devicePixelRatio;g.fillStyle='#070b18';g.fillRect(0,0,cv.width,cv.height);if(!buf)return;if(!peaks)computePeaks();
+ const H=cv.height,n=peaks.length,mx=Math.max(...peaks)||1;g.fillStyle='#5b7bd6';
+ for(let x=0;x<cv.width;x++){const t=x2t(x),i=Math.min(n-1,Math.max(0,Math.floor(t/buf.duration*n)));const h=peaks[i]/mx*H*0.46;g.fillRect(x,H/2-h,1,2*h||1)}
+ if(sheet){sheet.lines.forEach(l=>{g.fillStyle='rgba(61,217,235,0.08)';g.fillRect(t2x(l.startFrame/FPS),0,t2x(l.endFrame/FPS)-t2x(l.startFrame/FPS),H);
+  l.words.forEach((w,i)=>{const k=l.index+'.'+i,s=t2x(w.startFrame/FPS),e=t2x(w.endFrame/FPS);if(k===sel){g.fillStyle='rgba(230,184,92,0.22)';g.fillRect(s,0,e-s,H)}
+   g.strokeStyle='#E6B85C';g.lineWidth=k===sel?3:1.2;g.beginPath();g.moveTo(s,0);g.lineTo(s,H);g.stroke();
+   g.strokeStyle='#3dd9eb';g.lineWidth=k===sel?3:1;g.beginPath();g.moveTo(e,0);g.lineTo(e,H);g.stroke();
+   g.fillStyle='#fff';g.font=`${12*devicePixelRatio}px sans-serif`;g.fillText(k,s+3,14*devicePixelRatio)})});}
+ const t=cur();g.strokeStyle='#ff5577';g.lineWidth=2;g.beginPath();g.moveTo(t2x(t),0);g.lineTo(t2x(t),H);g.stroke();
+ g.fillStyle='#8ea0e0';g.font=`${11*devicePixelRatio}px sans-serif`;for(let s=Math.ceil(view.t0);s<view.t1;s++)g.fillText(s+'s',t2x(s)+2,H-6)}
+function cur(){return playing?offset+(ac.currentTime-startedAt):offset}
+function seek(t){offset=Math.max(0,t);if(playing){stop();play()}else draw()}
+function play(){if(!buf)return;ac=ac||new AudioContext();src=ac.createBufferSource();src.buffer=buf;src.connect(ac.destination);src.start(0,offset);startedAt=ac.currentTime;playing=true;src.onended=()=>{};tick()}
+function stop(){if(playing){offset=cur();src.stop();src.disconnect();playing=false}}
+$('play').onclick=()=>playing?stop():play();
+$('loop').onclick=()=>{if(!sel)return;loopOn=true;const {w}=find(sel);stop();offset=Math.max(0,w.startFrame/FPS-0.3);play()};
+function tick(){if(!playing)return;const t=cur();
+ if(loopOn&&sel){const {w}=find(sel);if(t>w.endFrame/FPS+0.3){stop();loopOn=false}}
+ if(sheet){const f=t*FPS;let txt='';for(const {l,w} of words()){if(f>=w.startFrame&&f<w.endFrame){txt=w.text}}$('cur').textContent=txt||'\u00a0'}
+ draw();requestAnimationFrame(tick)}
+cv.onwheel=e=>{e.preventDefault();const c=x2t(e.offsetX*devicePixelRatio),k=e.deltaY>0?1.2:1/1.2;view.t0=Math.max(0,c-(c-view.t0)*k);view.t1=Math.min(buf?buf.duration:15,c+(view.t1-c)*k);draw()};
+cv.oncontextmenu=e=>e.preventDefault();
+cv.onmousedown=e=>{if(!sheet)return;const x=e.offsetX*devicePixelRatio;
+ if(e.button===2){drag={pan:true,x,t0:view.t0,t1:view.t1};return}
+ let best=null,bd=14*devicePixelRatio;for(const {l,w,i} of words()){for(const side of ['startFrame','endFrame']){const d=Math.abs(t2x(w[side]/FPS)-x);if(d<bd){bd=d;best={k:l.index+'.'+i,side}}}}
+ if(best){select(best.k);drag=best}else{seek(x2t(x))}};
+window.onmousemove=e=>{if(!drag)return;const x=(e.clientX-cv.getBoundingClientRect().left)*devicePixelRatio;
+ if(drag.pan){const dt=(drag.x-x)/cv.width*(drag.t1-drag.t0);view.t0=Math.max(0,drag.t0+dt);view.t1=view.t0+(drag.t1-drag.t0);draw();return}
+ const {w}=find(drag.k);w[drag.side]=Math.max(0,Math.round(x2t(x)*FPS));fix(w);refresh();draw()};
+window.onmouseup=()=>{drag=null};
+function fix(w){if(w.endFrame<=w.startFrame)w.endFrame=w.startFrame+2;w.peakFrame=Math.min(w.endFrame-1,Math.max(w.startFrame,w.peakFrame))}
+window.onkeydown=e=>{if(e.code==='Space'){e.preventDefault();$('play').click();return}
+ if(e.key==='l'||e.key==='L'){$('loop').click();return}
+ if(!sel||!sheet)return;const {w}=find(sel),n=e.shiftKey?5:1;
+ const m={a:['startFrame',-n],d:['startFrame',n],q:['endFrame',-n],e:['endFrame',n]}[e.key.toLowerCase()];
+ if(m){w[m[0]]+=m[1];fix(w);refresh();draw()}};
+$('exp').onclick=()=>{const out={words:{}};sheet.lines.forEach((l,li)=>l.words.forEach((w,wi)=>{const o=orig.lines[li].words[wi];if(o.startFrame!==w.startFrame||o.endFrame!==w.endFrame)out.words[`${l.index}.${wi}`]={startFrame:w.startFrame,endFrame:w.endFrame}}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:'application/json'}));a.download='cue-overrides.json';a.click()};
+window.onresize=draw;
+</script></body></html>

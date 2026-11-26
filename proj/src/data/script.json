@@ -1,0 +1,13 @@
+{
+  "fps": 30,
+  "language": "am",
+  "lines": [
+    { "index": 1, "text": "ብዙዎች ነገሮችን ማወሳሰብ ያበዛሉ።", "emphasis": { "0": "minor", "2": "major" } },
+    { "index": 2, "text": "እኛ ግን አቅጣጫውን እንቀይራለን።", "emphasis": { "1": "major", "2": "major" } },
+    { "index": 3, "text": "ጥርት ያለ ቅርጽ፣ ትክክለኛ ጊዜ፣ ምንም ትርፍ ነገር የለም።", "emphasis": { "0": "major", "3": "major", "5": "major", "8": "minor" } },
+    { "index": 4, "text": "ቃሉን ስትናገሩ ስክሪኑ ይንቀሳቀሳል።", "emphasis": { "0": "major", "1": "major", "2": "major", "3": "major" } },
+    { "index": 5, "text": "ቀላል ሀሳብ፣ ትልቅ ውጤት።", "emphasis": { "0": "minor", "1": "minor", "2": "major", "3": "major" } },
+    { "index": 6, "text": "አሁን ተዘጋጅተናል።", "emphasis": { "1": "major" } }
+  ],
+  "estimatedFramesFromBrief": [[0, 126], [126, 204], [204, 324], [324, 414], [414, 468], [468, 510]]
+}
